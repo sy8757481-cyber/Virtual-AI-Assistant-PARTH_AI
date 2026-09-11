@@ -1,69 +1,50 @@
-"""
-==========================================
-PARTH AI
-Windows Control Module
-==========================================
-"""
+"""PARTH AI — Windows Control Module. Fixed commands only."""
 
-import os
 import subprocess
 import pyautogui
-
 from utils.logger import log_info, log_error
 
 
 class WindowsController:
+    def _open(self, executable, name):
+        try:
+            subprocess.Popen([executable])
+            log_info(f"{name} Opened")
+        except Exception as e:
+            log_error(f"{name} Error : {e}")
+            raise
 
     def open_notepad(self):
-        try:
-            subprocess.Popen("notepad.exe")
-            log_info("Notepad Opened")
-        except Exception as e:
-            log_error(str(e))
+        self._open("notepad.exe", "Notepad")
 
     def open_calculator(self):
-        try:
-            subprocess.Popen("calc.exe")
-            log_info("Calculator Opened")
-        except Exception as e:
-            log_error(str(e))
+        self._open("calc.exe", "Calculator")
 
     def open_cmd(self):
-        try:
-            subprocess.Popen("cmd.exe")
-            log_info("CMD Opened")
-        except Exception as e:
-            log_error(str(e))
+        self._open("cmd.exe", "CMD")
 
     def open_paint(self):
-        try:
-            subprocess.Popen("mspaint.exe")
-            log_info("Paint Opened")
-        except Exception as e:
-            log_error(str(e))
+        self._open("mspaint.exe", "Paint")
 
     def open_explorer(self):
-        try:
-            subprocess.Popen("explorer.exe")
-            log_info("File Explorer Opened")
-        except Exception as e:
-            log_error(str(e))
+        self._open("explorer.exe", "File Explorer")
 
     def take_screenshot(self, filename="screenshot.png"):
         try:
             image = pyautogui.screenshot()
             image.save(filename)
-
             log_info(f"Screenshot Saved : {filename}")
-
         except Exception as e:
-            log_error(str(e))
+            log_error(f"Screenshot Error : {e}")
+            raise
 
     def lock_pc(self):
         try:
-            os.system("rundll32.exe user32.dll,LockWorkStation")
-
-            log_info("PC Locked")
-
+            # Windows API reports failure; no shell or user-supplied command.
+            import ctypes
+            if not ctypes.windll.user32.LockWorkStation():
+                raise OSError("Windows rejected the lock request.")
+            log_info("PC Lock Requested")
         except Exception as e:
-            log_error(str(e))
+            log_error(f"PC Lock Error : {e}")
+            raise

@@ -6,21 +6,21 @@
 PROJECT_NAME = "Parth AI"
 VERSION = "1.0.0"
 
-# Voice Settings
+# Voice Settings (used by subprocess TTS)
 VOICE_RATE = 170
 VOICE_VOLUME = 1.0
 
 # Browser Settings
 DEFAULT_BROWSER = "chrome"
 
-# Local LLM Settings (Future - Ollama)
+# Local LLM — matches the current lightweight LLM module
 LLM_PROVIDER = "ollama"
-LLM_MODEL = "qwen2.5:3b"
+LLM_MODEL = "qwen2.5:1.5b"
 
-# Wake Word (Future)
-WAKE_WORD = "hey parth"
+# Current ONNX model key. Spoken wake phrase: "Hey Jarvis".
+WAKE_WORD = "hey_jarvis"
 
-# Memory
+# Memory (reserved for existing/future consumers)
 MEMORY_DATABASE = "data/memory.db"
 
 # Logging

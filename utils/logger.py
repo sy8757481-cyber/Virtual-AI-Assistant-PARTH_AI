@@ -1,38 +1,31 @@
+"""PARTH AI logging, configured once for this named logger."""
+
 import logging
 import os
 from config import LOG_FILE
 
-# Create logs directory if it doesn't exist
-os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-
-# Configure logging
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s",
-    datefmt="%d-%m-%Y %H:%M:%S"
-)
-
-# Logger object
+log_path = os.path.abspath(os.fspath(LOG_FILE))
+os.makedirs(os.path.dirname(log_path), exist_ok=True)
 logger = logging.getLogger("ParthAI")
+logger.setLevel(logging.INFO)
+logger.propagate = False
+
+if not logger.handlers:
+    handler = logging.FileHandler(log_path, encoding="utf-8")
+    handler.setFormatter(logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(message)s",
+        datefmt="%d-%m-%Y %H:%M:%S",
+    ))
+    logger.addHandler(handler)
 
 
 def log_info(message: str):
-    """
-    Log normal information.
-    """
     logger.info(message)
 
 
 def log_warning(message: str):
-    """
-    Log warning messages.
-    """
     logger.warning(message)
 
 
 def log_error(message: str):
-    """
-    Log error messages.
-    """
     logger.error(message)
